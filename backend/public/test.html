@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuppBot — Demo</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 640px; margin: 80px auto; padding: 0 20px; color: #333; line-height: 1.6; }
+    h1 { margin-bottom: 4px; }
+    p.sub { color: #666; margin-top: 0; }
+    code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+    pre { background: #f3f4f6; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; }
+    hr { border: none; border-top: 1px solid #e5e7eb; margin: 24px 0; }
+  </style>
+</head>
+<body>
+  <h1>SuppBot Demo</h1>
+  <p class="sub">AI-powered support chatbot — click the bubble in the bottom-right corner to try it.</p>
+  <hr>
+  <p>The chatbot answers questions using the <strong>CloudNote FAQ</strong> loaded in <code>docs/cloudnote.md</code>.</p>
+  <p>Try asking:</p>
+  <ul>
+    <li>"What are the pricing plans?"</li>
+    <li>"My notes aren't syncing"</li>
+    <li>"How do I cancel?"</li>
+    <li>"Can I export my notes?"</li>
+  </ul>
+  <hr>
+  <p><strong>Embed on your own site:</strong></p>
+  <pre>&lt;script
+  src="https://your-server.com/widget.js"
+  data-widget-token="pub_cloudnote_secretkey"
+  data-title="CloudNote Support"
+  data-welcome="Hi! How can I help?"
+  data-options="Getting Started,Common Issues,Billing,Contact Support"
+  data-primary-color="#2563eb"
+  data-secondary-color="#f3f4f6"
+  data-position="bottom-right"
+  data-offset-x="24px"
+  data-offset-y="24px"
+  data-api-url="https://your-server.com"
+&gt;&lt;/script&gt;</pre>
+
+<!-- SuppBot Usage -->
+<script
+  src="/widget.js"
+  data-widget-token="pub_cloudnote_secretkey"
+  data-title="CloudNote Support"
+  data-welcome="Hi! How can I help?"
+  data-options="Getting Started,Common Issues,Billing,Contact Support"
+  data-primary-color="#2563eb"
+  data-secondary-color="#f3f4f6"
+  data-position="bottom-right"
+  data-offset-x="24px"
+  data-offset-y="24px"
+></script>
+
+</body>
+</html>
