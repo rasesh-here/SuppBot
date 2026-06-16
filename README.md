@@ -1,6 +1,10 @@
 # SuppBot
 
-A lightweight, zero-dependency AI support chatbot widget that embeds onto any website. SuppBot answers user inquiries by referencing your markdown documentation (RAG) using Groq or OpenAI.
+<p align="center">
+  <img src="SuppBot.webp" alt="SuppBot Hero" width="800">
+</p>
+
+A lightweight, zero-dependency Plug and play AI Support ChatBot that embeds onto any website. SuppBot answers user inquiries by referencing your markdown documentation (RAG) using Groq or OpenAI.
 
 ## Features
 
@@ -65,6 +69,7 @@ Add the script tag to any HTML page:
   data-options="Getting Started,Common Issues,Billing,Contact Support"
   data-primary-color="#2563eb"
   data-secondary-color="#f3f4f6"
+  data-logo="http://localhost:3001/supp-black-no-bg.png"
   data-position="bottom-right"
   data-offset-x="24px"
   data-offset-y="24px"
@@ -82,6 +87,7 @@ Add the script tag to any HTML page:
 | `data-options` | Comma-separated list of quick-reply buttons | `Getting Started,Common Issues,Billing,Contact Support` |
 | `data-primary-color` | Accent theme color | `#2563eb` |
 | `data-secondary-color` | Chat window background color | `#f3f4f6` |
+| `data-logo` | Custom URL for chatbot logo (loaded in bubble and header) | `/supp-black-no-bg.png` |
 | `data-position` | Widget placement (`bottom-right`, `bottom-left`, `top-right`, `top-left`) | `bottom-right` |
 | `data-offset-x` | X-axis offset from the edge of the viewport | `24px` |
 | `data-offset-y` | Y-axis offset from the edge of the viewport | `24px` |

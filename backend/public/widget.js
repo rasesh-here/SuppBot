@@ -37,6 +37,7 @@
     options: scriptTag?.getAttribute("data-options") || "Getting Started,Common Issues,Billing,Contact Support",
     primaryColor: scriptTag?.getAttribute("data-primary-color") || "",
     secondaryColor: scriptTag?.getAttribute("data-secondary-color") || "",
+    logo: scriptTag?.getAttribute("data-logo") || `${apiUrl}/supp-black-no-bg.png`,
   };
 
   // Prevent double-init
@@ -84,19 +85,13 @@
 
   root.innerHTML = `
     <button id="sc-bubble" aria-label="Open support chat">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="11" fill="white" />
-        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" stroke="var(--sc-primary-color)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-        <circle cx="12" cy="16.5" r="1.5" fill="var(--sc-primary-color)" />
-      </svg>
+      <img src="${CONFIG.logo}" alt="SuppBot" class="sc-bubble-icon" />
     </button>
 
     <div id="sc-window" role="dialog" aria-label="Support chat">
       <div id="sc-header">
         <div id="sc-avatar">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-          </svg>
+          <img src="${CONFIG.logo}" alt="SuppBot" class="sc-avatar-icon" />
         </div>
         <div id="sc-title-container">
           <div id="sc-title">${CONFIG.title}</div>
@@ -134,10 +129,89 @@
   const closeBtn = document.getElementById("sc-close");
 
   // Helpers 
+  function parseMarkdown(text) {
+    if (!text) return "";
+    
+    // Escape HTML first to prevent XSS
+    let html = text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+      
+    // Parse bold: **text**
+    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    
+    // Parse italics: *text*
+    html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
+    
+    // Parse inline code: `code`
+    html = html.replace(/`(.*?)`/g, "<code>$1</code>");
+    
+    // Parse lists
+    const lines = html.split("\n");
+    let inList = false;
+    let listType = null; // 'ul' or 'ol'
+    let processedLines = [];
+    
+    lines.forEach((line) => {
+      const trimmed = line.trim();
+      const ulMatch = trimmed.match(/^[-*]\s+(.*)/);
+      const olMatch = trimmed.match(/^(\d+)\.\s+(.*)/);
+      
+      if (ulMatch) {
+        if (!inList || listType !== "ul") {
+          if (inList) processedLines.push(`</${listType}>`);
+          processedLines.push("<ul>");
+          inList = true;
+          listType = "ul";
+        }
+        processedLines.push(`<li>${ulMatch[1]}</li>`);
+      } else if (olMatch) {
+        if (!inList || listType !== "ol") {
+          if (inList) processedLines.push(`</${listType}>`);
+          processedLines.push("<ol>");
+          inList = true;
+          listType = "ol";
+        }
+        processedLines.push(`<li>${olMatch[2]}</li>`);
+      } else {
+        if (inList) {
+          processedLines.push(`</${listType}>`);
+          inList = false;
+          listType = null;
+        }
+        processedLines.push(line);
+      }
+    });
+    
+    if (inList) {
+      processedLines.push(`</${listType}>`);
+    }
+    
+    html = processedLines.join("\n");
+    
+    // Convert multiple line breaks to br tags
+    html = html.replace(/\n/g, "<br>");
+    
+    // Clean up br tags next to lists
+    html = html.replace(/<br>\s*<ul>/g, "<ul>")
+               .replace(/<\/ul>\s*<br>/g, "</ul>")
+               .replace(/<br>\s*<ol>/g, "<ol>")
+               .replace(/<\/ol>\s*<br>/g, "</ol>")
+               .replace(/<\/li>\s*<br>/g, "</li>")
+               .replace(/<li>\s*<br>/g, "<li>");
+               
+    return html;
+  }
+
   function addMessage(role, content) {
     const el = document.createElement("div");
     el.className = `sc-msg ${role}`;
-    el.textContent = content;
+    if (role === "bot" || role === "error") {
+      el.innerHTML = parseMarkdown(content);
+    } else {
+      el.textContent = content;
+    }
     messagesEl.appendChild(el);
     messagesEl.scrollTop = messagesEl.scrollHeight;
     return el;

@@ -1,20 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
 #sc-root {
-  --sc-primary-color: #2563eb;
+  --sc-primary-color: #3b82f6;
+  --sc-primary-gradient: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
   --sc-secondary-color: #f3f4f6;
   --sc-bg-color: var(--sc-secondary-color);
-  --sc-border-color: rgba(0, 0, 0, 0.1);
+  --sc-border-color: rgba(0, 0, 0, 0.08);
   --sc-bot-msg-bg: rgba(0, 0, 0, 0.06);
-  --sc-bot-msg-color: #111827;
+  --sc-bot-msg-color: #1f2937;
   --sc-error-bg: #fef2f2;
   --sc-error-color: #991b1b;
   --sc-error-border: #fecaca;
   --sc-scroll-thumb: rgba(0, 0, 0, 0.15);
   --sc-typing-dot: rgba(0, 0, 0, 0.4);
-  --sc-input-border: rgba(0, 0, 0, 0.15);
-  --sc-option-bg: rgba(0, 0, 0, 0.06);
-  --sc-option-color: var(--sc-primary-color);
-  --sc-option-border: rgba(0, 0, 0, 0.1);
-  --sc-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  --sc-input-border: rgba(0, 0, 0, 0.12);
+  --sc-option-bg: rgba(255, 255, 255, 0.8);
+  --sc-option-color: #2563eb;
+  --sc-option-border: rgba(37, 99, 235, 0.15);
+  --sc-shadow: 0 10px 40px rgba(0,0,0,0.12);
 
   --sc-top: auto;
   --sc-bottom: auto;
@@ -27,7 +30,7 @@
 
 #sc-root * {
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 #sc-bubble {
@@ -36,25 +39,31 @@
   bottom: var(--sc-bottom);
   left: var(--sc-left);
   right: var(--sc-right);
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background: var(--sc-primary-color);
+  background: var(--sc-primary-gradient);
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(37,99,235,0.4);
+  box-shadow: 0 4px 20px rgba(37,99,235,0.35);
   z-index: 99998;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease;
 }
 #sc-bubble:hover {
   transform: scale(1.08);
-  box-shadow: 0 6px 24px rgba(37,99,235,0.5);
+  box-shadow: 0 6px 24px rgba(37,99,235,0.45);
 }
-#sc-bubble svg {
+.sc-bubble-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
   transition: transform 0.2s ease;
+}
+#sc-bubble:hover .sc-bubble-icon {
+  transform: scale(1.1);
 }
 
 #sc-window {
@@ -85,22 +94,25 @@
 }
 
 #sc-header {
-  padding: 12px 16px;
-  background: var(--sc-primary-color);
+  padding: 14px 18px;
+  background: var(--sc-primary-gradient);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-shrink: 0;
 }
 #sc-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.2);
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+.sc-avatar-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 #sc-title-container {
   display: flex;
@@ -245,8 +257,8 @@
 #sc-send {
   width: 38px;
   height: 38px;
-  border-radius: 10px;
-  background: var(--sc-primary-color);
+  border-radius: 50%;
+  background: var(--sc-primary-gradient);
   border: none;
   cursor: pointer;
   display: flex;
@@ -255,11 +267,15 @@
   flex-shrink: 0;
   transition: background 0.15s, transform 0.1s;
 }
-#sc-send:hover { opacity: 0.9; }
-#sc-send:active { transform: scale(0.95); }
+#sc-send:hover {
+  opacity: 0.95;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+#sc-send:active { transform: scale(0.92); }
 #sc-send:disabled {
   background: var(--sc-scroll-thumb);
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .sc-options-container {
@@ -290,6 +306,31 @@
 }
 .sc-option-btn:active {
   transform: scale(0.96);
+}
+
+/* Bot message Markdown HTML rendering styles */
+.sc-msg.bot strong {
+  font-weight: 650;
+  color: #0f172a;
+}
+.sc-msg.bot ul, .sc-msg.bot ol {
+  margin: 6px 0 10px 0;
+  padding-left: 18px;
+}
+.sc-msg.bot li {
+  margin-bottom: 5px;
+  line-height: 1.5;
+}
+.sc-msg.bot li:last-child {
+  margin-bottom: 0;
+}
+.sc-msg.bot code {
+  background: rgba(0, 0, 0, 0.06);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 11.5px;
+  color: #1e293b;
 }
 
 @media (max-width: 420px) {
