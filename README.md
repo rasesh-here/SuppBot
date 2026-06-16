@@ -1,8 +1,6 @@
 # SuppBot
 
-<p align="center">
-  <img src="SuppBot.webp" alt="SuppBot Hero" width="800">
-</p>
+![SuppBot Hero](./backend/public/SuppBot.webp)
 
 A lightweight, zero-dependency Plug and play AI Support ChatBot that embeds onto any website. SuppBot answers user inquiries by referencing your markdown documentation (RAG) using Groq or OpenAI.
 
